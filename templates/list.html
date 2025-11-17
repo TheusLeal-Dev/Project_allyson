@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Lista de Usuários</title>
+</head>
+<body>
+<h2>Lista de Usuários</h2>
+
+<table border="1" cellpadding="5">
+    <tr>
+        <th>ID</th>
+        <th>Nome</th>
+        <th>Senha</th>
+        <th>Ações</th>
+    </tr>
+
+    {% for u in usuarios %}
+    <tr>
+        <td>{{ u[0] }}</td>
+        <td>{{ u[1] }}</td>
+        <td>{{ u[2] }}</td>
+        <td>
+            <a href="/usuario/update?id={{ u[0] }}">Atualizar</a> |
+            <a href="/usuario/delete?id={{ u[0] }}">Deletar</a>
+        </td>
+    </tr>
+    {% end %}
+</table>
+
+<br>
+<a href="/usuario/create">Criar Novo Usuário</a> |
+<a href="/">Voltar ao início</a>
+
+</body>
+</html>

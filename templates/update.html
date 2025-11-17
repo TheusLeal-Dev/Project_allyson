@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Atualizar Usuário</title>
+</head>
+<body>
+
+<h2>Atualizar Usuário</h2>
+
+<form action="/usuario/update" method="post">
+
+    <label>ID:</label>
+    <input type="text" value="{{ usuario[0] }}" disabled>
+    <input type="hidden" name="id" value="{{ usuario[0] }}">
+    <br><br>
+
+    <label>Nome:</label>
+    <input type="text" name="nome" value="{{ usuario[1] }}">
+    <br><br>
+
+    <label>Senha:</label>
+    <input type="text" name="senha" value="{{ usuario[2] }}">
+    <br><br>
+
+    <button type="submit">Salvar</button>
+</form>
+
+<br>
+<a href="/usuario/list">Voltar</a>
+
+</body>
+</html>

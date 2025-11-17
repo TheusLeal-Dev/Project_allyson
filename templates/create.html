@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Criar Usuário</title>
+</head>
+<body>
+    <h2>Criar Usuário</h2>
+
+    <form action="/usuario/create" method="post">
+        <label>Nome:</label>
+        <input type="text" name="nome" required><br><br>
+
+        <label>Senha:</label>
+        <input type="password" name="senha" required><br><br>
+
+        <button type="submit">Criar</button>
+    </form>
+
+    <br>
+    <a href="/usuario/list">Voltar</a>
+</body>
+</html>
