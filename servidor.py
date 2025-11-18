@@ -128,6 +128,7 @@ app = tornado.web.Application([
     (r"/usuario/list", UsuarioList),
     (r"/usuario/update", UsuarioUpdate),
     (r"/usuario/delete", UsuarioDelete),
+    (r"/static/(.*)", tornado.web.StaticFileHandler, {"path": "static"}),
 ])
 
 
