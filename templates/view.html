@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>View Usuário Completo</title>
+    <link rel="stylesheet" href="/static/view.css?v=1.0">
+</head>
+<body>
+
+<h2>View – Usuário Completo</h2>
+
+<table>
+    <thead>
+        <tr>
+            <th>ID Usuário</th>
+            <th>Nome</th>
+            <th>Perfil</th>
+            <th>Status</th>
+            <th>Ação</th>
+            <th>Data / Hora</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        {% for v in dados %}
+        <tr>
+            <td>{{ v[0] }}</td>
+            <td>{{ v[1] }}</td>
+            <td>{{ v[2] }}</td>
+            <td>{{ v[3] }}</td>
+            <td>{{ v[4] }}</td>
+            <td>{{ v[5] }}</td>
+        </tr>
+        {% end %}
+    </tbody>
+</table>
+
+<br>
+
+<a href="/usuario/list">← Voltar para Usuários</a>
+
+</body>
+</html>

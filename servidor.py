@@ -119,6 +119,32 @@ class UsuarioDelete(tornado.web.RequestHandler):
 
 
 # ----------------------------
+# VISUALIZAR LOGS (TRIGGERS)
+# ----------------------------
+class LogList(tornado.web.RequestHandler):
+    def get(self):
+        # ALTERAÇÃO: consulta tabela de logs para visualizar triggers
+        query = "SELECT * FROM log_usuario"
+        logs = conexao_db(query)
+
+        # ALTERAÇÃO: renderiza página de logs
+        self.render("templates/log.html", logs=logs)
+
+
+# ----------------------------
+# VISUALIZAR VIEW
+# ----------------------------
+class ViewUsuarioCompleto(tornado.web.RequestHandler):
+    def get(self):
+        # ALTERAÇÃO: consulta VIEW que envolve todas as tabelas
+        query = "SELECT * FROM vw_usuario_completo"
+        dados = conexao_db(query)
+
+        # ALTERAÇÃO: renderiza página da view
+        self.render("templates/view.html", dados=dados)
+
+
+# ----------------------------
 # ROTAS
 # ----------------------------
 app = tornado.web.Application([
@@ -128,6 +154,11 @@ app = tornado.web.Application([
     (r"/usuario/list", UsuarioList),
     (r"/usuario/update", UsuarioUpdate),
     (r"/usuario/delete", UsuarioDelete),
+    # ALTERAÇÃO: rota para visualizar logs (triggers)
+    (r"/log/list", LogList),
+
+    # ALTERAÇÃO: rota para visualizar a view
+    (r"/view/list", ViewUsuarioCompleto),
     (r"/static/(.*)", tornado.web.StaticFileHandler, {"path": "static"}),
 ])
 
@@ -139,3 +170,4 @@ if __name__ == "__main__":
     app.listen(8888)
     print("Servidor rodando em: http://localhost:8888")
     tornado.ioloop.IOLoop.current().start()
+

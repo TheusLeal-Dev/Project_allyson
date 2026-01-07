@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Logs do Sistema</title>
+    <link rel="stylesheet" href="/static/log.css?v=1.0">
+</head>
+<body>
+
+<h2>Logs de Usuários (Triggers)</h2>
+
+<table>
+    <thead>
+        <tr>
+            <th>ID Log</th>
+            <th>ID Usuário</th>
+            <th>Ação</th>
+            <th>Data / Hora</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        {% for l in logs %}
+        <tr>
+            <td>{{ l[0] }}</td>
+            <td>{{ l[1] }}</td>
+            <td>{{ l[2] }}</td>
+            <td>{{ l[3] }}</td>
+        </tr>
+        {% end %}
+    </tbody>
+</table>
+
+<br>
+
+<a href="/usuario/list">← Voltar para Usuários</a>
+
+</body>
+</html>

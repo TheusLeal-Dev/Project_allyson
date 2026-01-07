@@ -47,3 +47,37 @@ a {
 a:hover {
     color: #0097a7;
 }
+
+/* ===========================
+   MENU DE BOTÕES (LOG / VIEW)
+   =========================== */
+.menu-botoes {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    margin: 25px 0;
+}
+
+.menu-botoes button {
+    background-color: transparent;
+    color: #00bcd4;
+    border: 2px solid #00bcd4;
+    padding: 10px 22px;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.25s ease;
+}
+
+.menu-botoes button:hover {
+    background-color: #00bcd4;
+    color: #1e1e2f;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(0, 188, 212, 0.4);
+}
+
+.menu-botoes button:active {
+    transform: translateY(0);
+    box-shadow: none;
+}

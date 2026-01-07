@@ -19,38 +19,136 @@
   <component name="DBNavigator.Project.DatabaseBrowserManager">
     <autoscroll-to-editor value="false" />
     <autoscroll-from-editor value="true" />
-    <show-object-properties value="true" />
+    <show-object-properties value="false" />
     <loaded-nodes />
   </component>
   <component name="DBNavigator.Project.DatabaseConsoleManager">
     <connection id="c5c30a59-4661-48b3-8fd4-59630a33a9bb">
-      <console name="Connection" type="STANDARD" schema="main" session="Main"><![CDATA[create table usuario(
-nome varchar(100),
-senha varchar(100)
+      <console name="Connection" type="STANDARD" schema="main" session="Main"><![CDATA[CREATE TABLE usuario (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    nome TEXT NOT NULL,
+    senha TEXT NOT NULL
 );
 
-insert into usuario(nome,senha)
-values('aluno','123');
 
-insert into usuario(nome,senha)
-values('admin','123');
 
-insert into usuario(nome,senha)
-values('theus','123');
 
-select * from usuario;
 
-commit;]]></console>
+INSERT INTO usuario(nome, senha) VALUES
+('aluno', '123'),
+('admin', '123'),
+('theus', '123');
+
+
+
+
+
+
+CREATE TABLE perfil (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    nome_perfil TEXT
+);
+
+CREATE TABLE status_usuario (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    descricao TEXT
+);
+
+CREATE TABLE usuario_perfil (
+    id_usuario INTEGER,
+    id_perfil INTEGER,
+    FOREIGN KEY (id_usuario) REFERENCES usuario(id),
+    FOREIGN KEY (id_perfil) REFERENCES perfil(id)
+);
+
+CREATE TABLE log_usuario (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    id_usuario INTEGER,
+    acao TEXT,
+    data_acao DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (id_usuario) REFERENCES usuario(id)
+);
+ --Trigger Insert
+CREATE TRIGGER trg_usuario_insert
+AFTER INSERT ON usuario
+BEGIN
+    INSERT INTO log_usuario (id_usuario, acao)
+    VALUES (NEW.id, 'INSERT');
+END;
+
+
+
+--Trigger Update
+CREATE TRIGGER trg_usuario_update
+AFTER UPDATE ON usuario
+BEGIN
+    INSERT INTO log_usuario (id_usuario, acao)
+    VALUES (NEW.id, 'UPDATE');
+END;
+
+
+
+--Trigger Delete
+CREATE TRIGGER trg_usuario_delete
+AFTER DELETE ON usuario
+BEGIN
+    INSERT INTO log_usuario (id_usuario, acao)
+    VALUES (OLD.id, 'DELETE');
+END;
+
+
+
+--View
+CREATE VIEW vw_usuario_completo AS
+SELECT 
+    u.id AS usuario_id,
+    u.nome AS usuario_nome,
+    p.nome_perfil,
+    s.descricao AS status,
+    l.acao,
+    l.data_acao
+FROM usuario u
+LEFT JOIN usuario_perfil up ON up.id_usuario = u.id
+LEFT JOIN perfil p ON p.id = up.id_perfil
+LEFT JOIN status_usuario s ON s.id = u.id
+LEFT JOIN log_usuario l ON l.id_usuario = u.id;
+
+-- INSERIR DADOS PARA TESTE
+INSERT INTO perfil(nome_perfil) VALUES ('Admin'), ('Aluno');
+INSERT INTO status_usuario(descricao) VALUES ('Ativo'), ('Inativo');
+
+INSERT INTO usuario(nome, senha) VALUES ('theus','123'), ('alice','321');
+INSERT INTO usuario_perfil(id_usuario, id_perfil) VALUES (1,1), (2,2);
+
+-- TESTES
+
+-- UPDATE
+UPDATE usuario SET nome='TheusX' WHERE id=1;
+
+-- DELETE
+DELETE FROM usuario WHERE id=2;
+
+-- VERIFICAR LOGS
+SELECT * FROM log_usuario;
+
+-- VERIFICAR VIEW
+SELECT * FROM vw_usuario_completo;]]></console>
     </connection>
   </component>
   <component name="DBNavigator.Project.DatabaseEditorStateManager">
     <last-used-providers />
   </component>
   <component name="DBNavigator.Project.DatabaseFileManager">
-    <open-files />
+    <open-files>
+      <object connection-id="c5c30a59-4661-48b3-8fd4-59630a33a9bb" object-ref="consoles/Connection" />
+    </open-files>
   </component>
   <component name="DBNavigator.Project.DatabaseSessionManager">
     <connection id="c5c30a59-4661-48b3-8fd4-59630a33a9bb" />
+  </component>
+  <component name="DBNavigator.Project.DatasetFilterManager">
+    <filter-actions connection-id="c5c30a59-4661-48b3-8fd4-59630a33a9bb" dataset="main.usuario" active-filter-id="" />
+    <filter-actions connection-id="c5c30a59-4661-48b3-8fd4-59630a33a9bb" dataset="main.sqlite_sequence" active-filter-id="" />
   </component>
   <component name="DBNavigator.Project.ExecutionManager">
     <retain-sticky-names value="false" />
