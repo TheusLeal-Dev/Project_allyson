@@ -100,7 +100,6 @@ class UsuarioUpdate(tornado.web.RequestHandler):
         self.write("Usuário atualizado! <br><a href='/usuario/list'>Voltar</a>")
 
 
-
 # ----------------------------
 # CRUD – DELETE
 # ----------------------------
@@ -145,20 +144,58 @@ class ViewUsuarioCompleto(tornado.web.RequestHandler):
 
 
 # ----------------------------
+# TESTES DE TRIGGER (LOG)
+# ----------------------------
+class LogTestInsert(tornado.web.RequestHandler):
+    def post(self):
+        conexao_db(
+            "INSERT INTO usuario (nome, senha) VALUES (?, ?)",
+            ("teste_insert", "123")
+        )
+        self.redirect("/log/list")
+
+
+class LogTestUpdate(tornado.web.RequestHandler):
+    def post(self):
+        conexao_db(
+            "UPDATE usuario SET nome=? WHERE id=(SELECT id FROM usuario ORDER BY id DESC LIMIT 1)",
+            ("teste_update",)
+        )
+        self.redirect("/log/list")
+
+
+class LogTestDelete(tornado.web.RequestHandler):
+    def post(self):
+        conexao_db(
+            "DELETE FROM usuario WHERE id=(SELECT id FROM usuario ORDER BY id DESC LIMIT 1)"
+        )
+        self.redirect("/log/list")
+
+
+# ----------------------------
 # ROTAS
 # ----------------------------
 app = tornado.web.Application([
     (r"/", Login),
     (r"/index", Index),
+
     (r"/usuario/create", UsuarioCreate),
     (r"/usuario/list", UsuarioList),
     (r"/usuario/update", UsuarioUpdate),
     (r"/usuario/delete", UsuarioDelete),
+
     # ALTERAÇÃO: rota para visualizar logs (triggers)
     (r"/log/list", LogList),
 
+    # ALTERAÇÃO: rotas para testar triggers via interface
+    (r"/log/test/insert", LogTestInsert),
+    (r"/log/test/update", LogTestUpdate),
+    (r"/log/test/delete", LogTestDelete),
+
     # ALTERAÇÃO: rota para visualizar a view
     (r"/view/list", ViewUsuarioCompleto),
+
+    # ALTERAÇÃO: static por último (organização)
     (r"/static/(.*)", tornado.web.StaticFileHandler, {"path": "static"}),
 ])
 
@@ -170,4 +207,3 @@ if __name__ == "__main__":
     app.listen(8888)
     print("Servidor rodando em: http://localhost:8888")
     tornado.ioloop.IOLoop.current().start()
-

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Logs do Sistema</title>
-    <link rel="stylesheet" href="/static/log.css?v=1.1">
+    <link rel="stylesheet" href="/static/logs.css?v=1.3">
 </head>
 <body>
 
@@ -16,6 +16,7 @@
             <th>ID Usuário</th>
             <th>Ação</th>
             <th>Data / Hora</th>
+            <th>SQL</th>
         </tr>
     </thead>
 
@@ -24,16 +25,80 @@
         <tr>
             <td>{{ l[0] }}</td>
             <td>{{ l[1] }}</td>
-            <td>{{ l[2] }}</td>
+
+            <!-- ALTERAÇÃO: ação com classe pra colorir -->
+            <td class="acao {{ l[2].lower() }}">{{ l[2] }}</td>
+
             <td>{{ l[3] }}</td>
+            <td>
+                <button
+                    class="btn-sql"
+                    type="button"
+                    onclick="verSQL('{{ l[2] }}')">
+                    Ver SQL
+                </button>
+            </td>
         </tr>
         {% end %}
     </tbody>
 </table>
 
+<!-- CAIXA DO SQL -->
+<div id="sql-wrapper" style="display:none;">
+    <h3 class="sql-title">SQL do Trigger</h3>
+    <pre id="sql-box"></pre>
+
+    <!-- ALTERAÇÃO: botão para esconder o SQL -->
+    <button class="btn-sql fechar" type="button" onclick="fecharSQL()">Esconder SQL</button>
+</div>
+
 <br>
 
-<a href="/usuario/list">← Voltar para Usuários</a>
+<!-- ALTERAÇÃO: link voltar com classe pra manter estilo padrão -->
+<a class="voltar" href="/usuario/list">← Voltar para Usuários</a>
+
+<script>
+function verSQL(acao) {
+    const wrapper = document.getElementById("sql-wrapper");
+    const box = document.getElementById("sql-box");
+
+    const sqlInsert =
+`CREATE TRIGGER trg_usuario_insert
+AFTER INSERT ON usuario
+BEGIN
+    INSERT INTO log_usuario (id_usuario, acao)
+    VALUES (NEW.id, 'INSERT');
+END;`;
+
+    const sqlUpdate =
+`CREATE TRIGGER trg_usuario_update
+AFTER UPDATE ON usuario
+BEGIN
+    INSERT INTO log_usuario (id_usuario, acao)
+    VALUES (NEW.id, 'UPDATE');
+END;`;
+
+    const sqlDelete =
+`CREATE TRIGGER trg_usuario_delete
+AFTER DELETE ON usuario
+BEGIN
+    INSERT INTO log_usuario (id_usuario, acao)
+    VALUES (OLD.id, 'DELETE');
+END;`;
+
+    if (acao === "INSERT") box.textContent = sqlInsert;
+    else if (acao === "UPDATE") box.textContent = sqlUpdate;
+    else if (acao === "DELETE") box.textContent = sqlDelete;
+    else box.textContent = "-- Ação não reconhecida.";
+
+    wrapper.style.display = "block";
+    wrapper.scrollIntoView({ behavior: "smooth" });
+}
+
+function fecharSQL() {
+    document.getElementById("sql-wrapper").style.display = "none";
+}
+</script>
 
 </body>
 </html>

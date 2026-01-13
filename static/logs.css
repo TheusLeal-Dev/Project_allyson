@@ -1,0 +1,91 @@
+body {
+    background-color: #1e1e2f;
+    color: #f0f0f0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    padding: 40px 20px;
+}
+
+h2 {
+    color: #00bcd4;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #2c2c3c;
+    margin-bottom: 20px;
+}
+
+th, td {
+    padding: 12px;
+    border: 1px solid #444;
+    text-align: center;
+}
+
+th {
+    background-color: #3b3b4f;
+    color: #00bcd4;
+}
+
+tr:hover {
+    background-color: #34344a;
+}
+
+/* botão "Ver SQL" e "Esconder SQL" */
+.btn-sql {
+    background-color: transparent;
+    border: 2px solid #00bcd4;
+    color: #00bcd4;
+    padding: 8px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: 0.25s;
+}
+
+.btn-sql:hover {
+    background-color: #00bcd4;
+    color: #1e1e2f;
+}
+
+.btn-sql.fechar {
+    margin-top: 10px;
+}
+
+/* caixa do sql */
+#sql-wrapper {
+    margin-top: 25px;
+}
+
+.sql-title {
+    color: #00bcd4;
+    margin: 0 0 10px 0;
+}
+
+#sql-box {
+    background-color: #2c2c3c;
+    color: #00bcd4;
+    padding: 15px;
+    border-radius: 8px;
+    border: 1px solid #444;
+    overflow-x: auto;
+}
+
+/* botão voltar padrão */
+a.voltar {
+    color: #00bcd4;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+a.voltar:hover {
+    color: #0097a7;
+    text-decoration: underline;
+}
+
+/* destaque visual da ação */
+.acao.insert { color: #4caf50; font-weight: bold; }
+.acao.update { color: #ffc107; font-weight: bold; }
+.acao.delete { color: #f44336; font-weight: bold; }

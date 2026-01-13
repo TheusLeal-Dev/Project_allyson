@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Logs do Sistema</title>
+    <link rel="stylesheet" href="/static/logs.css?v=1.2">
+</head>
+<body>
+
+<h2>Logs de Usuários (Triggers)</h2>
+
+<table>
+    <thead>
+        <tr>
+            <th>ID Log</th>
+            <th>ID Usuário</th>
+            <th>Ação</th>
+            <th>Data / Hora</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for l in logs %}
+        <tr>
+            <td>{{ l[0] }}</td>
+            <td>{{ l[1] }}</td>
+            <td>{{ l[2] }}</td>
+            <td>{{ l[3] }}</td>
+        </tr>
+        {% end %}
+    </tbody>
+</table>
+
+<div class="acoes-log">
+    <form action="/log/test/insert" method="post">
+        <button class="btn-log insert" type="submit">Testar INSERT</button>
+    </form>
+
+    <form action="/log/test/update" method="post">
+        <button class="btn-log update" type="submit">Testar UPDATE</button>
+    </form>
+
+    <form action="/log/test/delete" method="post">
+        <button class="btn-log delete" type="submit">Testar DELETE</button>
+    </form>
+
+    <button class="btn-log sql" type="button" onclick="toggleSQL()">Ver SQL</button>
+</div>
+
+<pre id="sql-box" style="display:none;">
+CREATE TRIGGER trg_usuario_insert
+AFTER INSERT ON usuario
+BEGIN
+    INSERT INTO log_usuario (id_usuario, acao)
+    VALUES (NEW.id, 'INSERT');
+END;
+
+CREATE TRIGGER trg_usuario_update
+AFTER UPDATE ON usuario
+BEGIN
+    INSERT INTO log_usuario (id_usuario, acao)
+    VALUES (NEW.id, 'UPDATE');
+END;
+
+CREATE TRIGGER trg_usuario_delete
+AFTER DELETE ON usuario
+BEGIN
+    INSERT INTO log_usuario (id_usuario, acao)
+    VALUES (OLD.id, 'DELETE');
+END;
+</pre>
+
+<br>
+<a href="/usuario/list">← Voltar para Usuários</a>
+
+<script>
+function toggleSQL() {
+    const box = document.getElementById("sql-box");
+    box.style.display = box.style.display === "none" ? "block" : "none";
+}
+</script>
+
+</body>
+</html>

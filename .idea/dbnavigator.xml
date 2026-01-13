@@ -123,7 +123,7 @@ INSERT INTO usuario_perfil(id_usuario, id_perfil) VALUES (1,1), (2,2);
 -- TESTES
 
 -- UPDATE
-UPDATE usuario SET nome='TheusX' WHERE id=1;
+UPDATE usuario SET nome='Theus' WHERE id=1;
 
 -- DELETE
 DELETE FROM usuario WHERE id=2;
@@ -132,7 +132,30 @@ DELETE FROM usuario WHERE id=2;
 SELECT * FROM log_usuario;
 
 -- VERIFICAR VIEW
-SELECT * FROM vw_usuario_completo;]]></console>
+SELECT * FROM vw_usuario_completo;
+
+
+-- Teste Trigger
+-- Ver estado inicial do log
+SELECT * FROM log_usuario;
+
+--TESTE DO TRIGGER INSERT
+INSERT INTO usuario (nome, senha)
+VALUES ('lan', '123');
+
+--TESTE DO TRIGGER UPDATE
+UPDATE usuario
+SET nome = 'teste_update'
+WHERE nome = 'teste_trigger';
+
+SELECT * FROM log_usuario;
+
+
+--TESTE DO TRIGGER DELETE
+DELETE FROM usuario
+WHERE nome = 'teste_update';
+
+SELECT * FROM log_usuario;]]></console>
     </connection>
   </component>
   <component name="DBNavigator.Project.DatabaseEditorStateManager">
